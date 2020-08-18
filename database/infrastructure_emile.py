@@ -1,23 +1,19 @@
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://dominiquems:Domi-2492@cluster0.xxqtl.azure.mongodb.net/catbnb?retryWrites=true&w=majority")
 
-db = client.get_database('catbnb')
-
-records = db.cats
 
 # insert record
 
 
-def insert_record(entry):
-    if not check_record(entry):
+def insert_record(entry, records):
+    if not check_record(entry, records):
         records.insert_one(entry)
         print("Inserted record")
     else:
         print("Record already found in database")
 
 
-def check_record(entry: dict):
+def check_record(entry: dict, records):
     if records.count_documents(entry) > 0:
         return True
     return False
@@ -60,5 +56,5 @@ def main():
         exit(0)
 
 
-main()
-
+if __name__ == "__main__":
+    main()
