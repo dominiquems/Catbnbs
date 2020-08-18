@@ -1,9 +1,9 @@
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://dominiquems:Domi-2492@cluster0.xxqtl.azure.mongodb.net/test.catbnb?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://dominiquems:Domi-2492@cluster0.xxqtl.azure.mongodb.net/catbnb?retryWrites=true&w=majority")
 
 db = client.get_database("catbnb")
-records = db.student_records
+records = db.cats
 
 
 def check_record(entry: dict) -> bool:
@@ -15,12 +15,12 @@ def check_record(entry: dict) -> bool:
 def insert_record(entry: dict):
     if not check_record(entry):
         records.insert_one(entry)
-        print(f"{entry['name'].capitalize()} is now member of Catbnb!")
+        print("Inserted entry successfully...")
     else:
-        print(f"{entry['name'].capitalize()} is already member of Catbnb!")
+        print("Could not insert entry because it already exists...")
 
 
-def get_info():
+def get_info_cat():
     name = input("What is the name? ").strip().lower()
     age = input("What is the age? ").strip()
     gender = input("What is the gender? ").strip().lower()
@@ -30,10 +30,10 @@ def get_info():
 
 def delete_record(entry: dict):
     if check_record(entry[entry]):
-        records.deleteOne(entry)
-        print(f"{entry['name'].capitalize()} is no longer member of Catbnb!")
+        records.delete_one(entry)
+        print("Deleted entry successfully...")
     else:
-        print(f"Cannot find a kiddy named {entry['name'].capitalize()}!")
+        print("Could not find entry...")
 
 
 def main():
@@ -41,11 +41,11 @@ def main():
     choice = input("Would you like to [a]dd, [u]pdate or [r]emove a cat? ").lower().strip()
 
     if choice == 'a':
-        insert_record(get_info())
+        insert_record(get_info_cat())
     elif choice == 'u':
         pass
     elif choice == 'r':
-        delete_record(get_info())
+        delete_record(get_info_cat())
     else:
         exit(0)
 
